@@ -48,7 +48,7 @@ const LoginScreen = () => {
         ]);
       }
     };
-   //checkLoginStatus();
+  // checkLoginStatus();
   }, []);
   const handleLogin = async () =>{
     try {

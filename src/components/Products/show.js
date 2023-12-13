@@ -5,25 +5,30 @@ import { db } from '../../firebase/firebase-config';
 import { collection, getDoc, doc } from 'firebase/firestore'
 import { useNavigation } from "@react-navigation/native";
 
-const BlogView = () => {
+const ProductDetail = () => {
   const navigation = useNavigation();
-  const blogs = collection(db, "blogs")
+  const products = collection(db, "products")
   const route = useRoute();
   const { id } = route.params;
-  const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
+  const [name, setName] = useState('');
+  const [price, setPrice] = useState(0);
+  const [quantity, setQuantity] = useState(0);
+  const [size, setSize] = useState('');
 
   useEffect(() => {
     // Fetch the data when the component mounts
     const fetchData = async () => {
       try {
-        const docRef = doc(blogs, id);
+        const docRef = doc(products, id);
         const docSnapshot = await getDoc(docRef);
 
         if (docSnapshot.exists()) {
           const data = docSnapshot.data();
-          setTitle(data.Title);
-          setBody(data.Body);
+          setName(data.Name);
+          setPrice(data.Price);
+          setQuantity(data.Quantity);
+          setSize(data.Size);
+          console.log(`Name: ${data.name}`)
         } else {
           Alert.alert("Document not found");
         }
@@ -44,8 +49,10 @@ const BlogView = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.body}>{body}</Text>
+      <Text style={styles.title}>Name: {name}</Text>
+      <Text style={styles.title}>Price: {price}</Text>
+      <Text style={styles.title}>Quantity: {quantity}</Text>
+      <Text style={styles.title}>Size: {size}</Text>
     </View>
   );
 };
@@ -66,4 +73,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BlogView;
+export default ProductDetail;

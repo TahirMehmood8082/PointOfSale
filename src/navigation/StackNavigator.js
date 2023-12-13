@@ -4,14 +4,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
-import HomeScreen from "../screens/HomeScreen"
-//import CrudScreen from '../screens/CrudScreen'
-import Posts from '../screens/Posts'
-import Post1 from '../screens/Post1'
-import CreateBlog from "../components/Blogs/create";
-import Bloglist from "../components/Blogs/bloglist";
-import BlogView from "../components/Blogs/show";
-import BlogEdit from "../components/Blogs/edit";
+import ProductScreen from "../screens/ProductScreen";
+import CreateProduct from "../components/Products/create";
+import ProductList from "../components/Products/list";
+import ProductDetail from "../components/Products/show";
+import EditProduct from "../components/Products/edit";
 
 const StackNavigator = () => {
   const Stack = createNativeStackNavigator();
@@ -30,24 +27,14 @@ const StackNavigator = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Home"
-          component={HomeScreen}
+          name="Product"
+          component={ProductScreen}
           options={{ headerShown: false }}
         />
-        {/* <Stack.Screen
-          name="Posts"
-          component={Posts}
-          options={{ headerShown: false }}
-        />
-         <Stack.Screen
-          name="Post1"
-          component={Post1}
-          options={{ headerShown: false }}
-        /> */}
         <Stack.Screen
           name="Create"
-          component={CreateBlog}
-          options={{ headerShown: true, title: 'Create Post' , 
+          component={CreateProduct}
+          options={{ headerShown: true, title: 'Create Product' , 
           headerStyle: {
             backgroundColor: 'green', 
           },
@@ -56,8 +43,8 @@ const StackNavigator = () => {
         />
         <Stack.Screen
           name="List"
-          component={Bloglist}
-          options={{ headerShown: true, title: 'Blogs List', 
+          component={ProductList}
+          options={{ headerShown: true, title: 'Products List', 
           headerStyle: {
             backgroundColor: 'green', 
           },
@@ -66,8 +53,8 @@ const StackNavigator = () => {
         />
         <Stack.Screen
           name="Show"
-          component={BlogView}
-          options={{ headerShown: true, title: 'Post Detail' , 
+          component={ProductDetail}
+          options={{ headerShown: true, title: 'Product Detail' , 
           headerStyle: {
             backgroundColor: 'green', 
           },
@@ -76,8 +63,8 @@ const StackNavigator = () => {
         />
         <Stack.Screen
           name="Edit"
-          component={BlogEdit}
-          options={{ headerShown: true, title: 'Edit Post' , 
+          component={EditProduct}
+          options={{ headerShown: true, title: 'Edit Product' , 
           headerStyle: {
             backgroundColor: 'green', 
           },
