@@ -4,24 +4,28 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import { db } from '../../firebase/firebase-config';
 import { collection, getDoc, updateDoc, doc, serverTimestamp } from 'firebase/firestore';
 
-function BlogEdit() {
+function EditProduct() {
   const route = useRoute();
   const navigation = useNavigation();
-  const blogs = collection(db, "blogs")
+  const products = collection(db, "products")
   const { id } = route.params;
-  const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
+  const [name, setName] = useState('');
+  const [price, setPrice] = useState(0);
+  const [quantity, setQuantity] = useState(0);
+  const [size, setSize] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const docRef = doc(blogs, id);
+        const docRef = doc(products, id);
         const docSnapshot = await getDoc(docRef);
 
         if (docSnapshot.exists()) {
           const data = docSnapshot.data();
-          setTitle(data.Title);
-          setBody(data.Body);
+          setName(data.Name)
+          setPrice(data.Price)
+          setQuantity(data.Quantity)
+          setSize(data.Size)
         } else {
           Alert.alert("Document not found");
         }
@@ -40,13 +44,14 @@ function BlogEdit() {
     fetchData();
   }, [id]);
 
-  const updatePost = async () => {
+  const updateProduct = async () => {
     try {
-      const docRef = doc(blogs, id);
+      const docRef = doc(products, id);
       await updateDoc(docRef, {
-        Title: title,
-        Body: body,
-        last_Updated: serverTimestamp(),
+        Name: name,
+        Price: price,
+        Quantity: quantity,
+        Size: size,
       });
 
       Alert.alert("Success", "Data Successfully Updated", [
@@ -75,23 +80,37 @@ function BlogEdit() {
     <View style={styles.container}>
       <TextInput
         style={styles.input}
-        placeholder="Title"
-        value={title}
-        onChangeText={(text) => setTitle(text)}
+        placeholder="Name"
+        onChangeText={(text) => setName(text)}
+        value={name}
         required
       />
 
       <TextInput
-        style={styles.textArea}
-        multiline={true}
-        numberOfLines={10}
-        placeholder="Write your content here"
-        value={body}
-        onChangeText={(text) => setBody(text)}
+        style={styles.input}
+        placeholder="Enter a price"
+        keyboardType="numeric"
+        onChangeText={(text) => setPrice(text)}
+        value={price}
+      />  
+
+      <TextInput
+        style={styles.input}
+        placeholder="Enter a quantity"
+        keyboardType="numeric"
+        onChangeText={(text) => setQuantity(text)}
+        value={quantity}
+      /> 
+
+      <TextInput
+        style={styles.input}
+        placeholder="Size"
+        onChangeText={(text) => setSize(text)}
+        value={size}
         required
       />
 
-      <Button title="Submit" onPress={updatePost} />
+      <Button title="Update" onPress={updateProduct} />
     </View>
   );
 }
@@ -117,4 +136,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BlogEdit;
+export default EditProduct;

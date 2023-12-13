@@ -4,14 +4,14 @@ import { useNavigation } from "@react-navigation/native";
 import { db } from '../../firebase/firebase-config';
 import { collection, getDocs, addDoc, updateDoc, doc, deleteDoc } from 'firebase/firestore';
 
-const BlogList = () => {
+const ProductList = () => {
   const navigation = useNavigation();
-  const [blogsList, setBlogs] = useState([]);
-  const blogsCollectionRef = collection(db, "blogs");
+  const [productsList, setProducts] = useState([]);
+  const productsCollectionRef = collection(db, "products");
 
-  const DeleteBlog = async (id) => {
+  const DeleteProduct = async (id) => {
     try {
-      await deleteDoc(doc(blogsCollectionRef, id));
+      await deleteDoc(doc(productsCollectionRef, id));
       Alert.alert("Success", "Data Successfully Deleted", [
         {
           text: "OK",
@@ -33,14 +33,15 @@ const BlogList = () => {
   };
 
   useEffect(() => {
-    const fetchBlogs = async () => {
+    const fetchProducts = async () => {
       try {
-        const querySnapshot = await getDocs(blogsCollectionRef);
+        const querySnapshot = await getDocs(productsCollectionRef);
         const data = querySnapshot.docs.map(doc => ({
           ...doc.data(),
           id: doc.id,
         }));
-        setBlogs(data);
+        setProducts(data);
+        console.log(`Products: ${data}`)
       } catch (error) {
         Alert.alert("Error", "Error Getting Document: " + error.message, [
           {
@@ -53,19 +54,21 @@ const BlogList = () => {
       }
     };
 
-    fetchBlogs();
-  }, [blogsList]);
+    fetchProducts();
+  }, [productsList]);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>All Blogs List</Text>
+      <Text style={styles.title}>All Products List</Text>
       <FlatList
-        data={blogsList}
+        data={productsList}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.blogItem}>
-            <Text>Title: {item.Title}</Text>
-            <Text>Body: {item.Body}</Text>
+          <View style={styles.productItem}>
+            <Text style={styles.title}>Name: {item.Name}</Text>
+            <Text style={styles.title}>Price: {item.Price}</Text>
+            <Text style={styles.title}>Quantity: {item.Quantity}</Text>
+            <Text style={styles.title}>Size: {item.Size}</Text>
             <TouchableOpacity
               style={styles.button}
               onPress={() => navigation.navigate('Show', { id: item.id })}
@@ -80,7 +83,7 @@ const BlogList = () => {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.button}
-              onPress={() => DeleteBlog(item.id)}
+              onPress={() => DeleteProduct(item.id)}
             >
               <Text style={styles.buttonText}>Delete</Text>
             </TouchableOpacity>
@@ -108,7 +111,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: 'center'
   },
-  blogItem: {
+  productItem: {
     borderWidth: 1,
     borderColor: 'lightgray',
     padding: 10,
@@ -126,4 +129,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BlogList;
+export default ProductList;
